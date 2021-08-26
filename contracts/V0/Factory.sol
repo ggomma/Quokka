@@ -32,7 +32,7 @@ contract Factory {
         require(allowance >= amount, "Token allowance is not enough");
         mainToken.transferFrom(msg.sender, feePool, amount);
 
-        Avatar avatar = new Avatar(msg.sender, address(this));
+        Avatar avatar = new Avatar(address(this), msg.sender);
         avatarAddress = address(avatar);
 
         totalSupply += 1;
