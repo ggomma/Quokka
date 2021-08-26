@@ -4,10 +4,12 @@ pragma solidity ^0.8.0;
 import {Avatar} from "./Avatar.sol";
 import {MainToken} from "./MainToken.sol";
 import {SystemVariables} from "./SystemVariables.sol";
+import {EquipmentRegistry} from "./EquipmentRegistry.sol";
 
 // TODO: 721 Compatible
 contract Factory {
     SystemVariables public systemVariables;
+    EquipmentRegistry public equipmentRegistry;
     MainToken public mainToken;
     address public feePool;
 
@@ -17,12 +19,14 @@ contract Factory {
 
     constructor(
         SystemVariables _systemVariables,
+        EquipmentRegistry _equipmentRegistry,
         MainToken _mainToken,
         address _feePool
     ) {
         mainToken = _mainToken;
         feePool = _feePool;
         systemVariables = _systemVariables;
+        equipmentRegistry = _equipmentRegistry;
     }
 
     function mint() public returns (address avatarAddress) {
@@ -32,7 +36,11 @@ contract Factory {
         require(allowance >= amount, "Token allowance is not enough");
         mainToken.transferFrom(msg.sender, feePool, amount);
 
-        Avatar avatar = new Avatar(address(this), msg.sender);
+        Avatar avatar = new Avatar(
+            address(this),
+            equipmentRegistry,
+            msg.sender
+        );
         avatarAddress = address(avatar);
 
         totalSupply += 1;
