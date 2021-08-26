@@ -32,11 +32,26 @@ contract Factory {
         require(allowance >= amount, "Token allowance is not enough");
         mainToken.transferFrom(msg.sender, feePool, amount);
 
-        Avatar avatar = new Avatar(msg.sender);
+        Avatar avatar = new Avatar(msg.sender, address(this));
         avatarAddress = address(avatar);
 
         totalSupply += 1;
         ownerOf[totalSupply] = msg.sender;
         avatarOf[totalSupply] = avatarAddress;
+    }
+
+    function transferFrom(
+        address _from,
+        address _to,
+        uint256 _tokenId
+    ) public {
+        require(ownerOf[_tokenId] == _from, "only owner can transfer avatar");
+
+        address avatarAddress = avatarOf[_tokenId];
+        require(avatarAddress != address(0), "Avatar does not exist");
+        Avatar avatar = Avatar(avatarAddress);
+
+        avatar.transferOwnership(_to);
+        ownerOf[_tokenId] = _to;
     }
 }

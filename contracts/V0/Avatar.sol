@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract Avatar {
-    address public owner;
+import {Ownable} from "./Ownable.sol";
 
-    constructor(address _owner) {
-        owner = _owner;
+contract Avatar is Ownable {
+    address immigrantCenter;
+
+    constructor(address _immigrantCenter, address _owner) Ownable(_owner) {
+        immigrantCenter = _immigrantCenter;
     }
 }
