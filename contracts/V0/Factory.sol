@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import {Avatar} from "./Avatar.sol";
 
+// TODO: 721 Compatible
 contract Factory {
     mapping(uint256 => address) ownerOf; // Avatar owner
     mapping(uint256 => address) avatarOf; // Avatar address
