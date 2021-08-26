@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 import {Ownable} from "./Ownable.sol";
 import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {EquipmentRegistry} from "./EquipmentRegistry.sol";
+import {LibEquipment} from "./LibEquipment.sol";
 
 contract Avatar is Ownable {
     address public immigrantCenter;
@@ -12,11 +13,7 @@ contract Avatar is Ownable {
     /**
         Equipment
      */
-    struct Equipment {
-        address assetContract;
-        uint256 tokenId;
-    }
-    mapping(bytes4 => Equipment) equipped;
+    mapping(bytes4 => LibEquipment.Equipment) equipped;
 
     /**
         Inventory
@@ -95,7 +92,8 @@ contract Avatar is Ownable {
 
         Equipment memory equipment = Equipment({
             assetContract: _assetContract,
-            tokenId: _tokenId
+            tokenId: _tokenId,
+            equipmentFormat: LibEquipment.EquipmentFormat.ERC721
         });
         equipped[_type] = equipment;
     }
